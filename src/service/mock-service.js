@@ -58,7 +58,7 @@ export default class MockService {
         ? this.offers.find((offer) => offer.type === type)
         : [];
 
-      generateEvent(type, destination.id, offerIds);
+      return generateEvent(type, destination.id, offerIds);
     });
   }
 }

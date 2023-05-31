@@ -5,8 +5,8 @@ function generateEvent(type, destinationId, offersIds) {
   return {
     id: crypto.randomUUID(),
     basePrice: getRandomInteger(1, 1000),
-    dateFrom: getRandomDate(),
-    dateTo: getRandomDate(true),
+    dateFrom: getRandomDate({isTo: false}),
+    dateTo: getRandomDate({isTo: true}),
     destination: destinationId,
     isFavorite: getRandomBoolean(),
     offers: offersIds,
