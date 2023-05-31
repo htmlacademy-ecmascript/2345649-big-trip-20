@@ -42,7 +42,7 @@ export default class MockService {
     return POINT_TYPES.map((type) => ({
       type,
       offers: Array.from({ length: getRandomInteger(0, OFFER_COUNT) }, () =>
-        generateOffer()
+        generateOffer(type)
       ),
     }));
   }

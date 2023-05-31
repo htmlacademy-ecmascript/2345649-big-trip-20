@@ -1,7 +1,19 @@
 import Component from './component.js';
 import { shortDate, longDate, timeOfDay, duration, dateTime } from '../utils/utils.js';
 
-function createTemplate({dateFrom, dateTo, type, basePrice, isFavorite}) {
+function createOffersTemplate(offers) {
+  const offerTemplates = offers.map((o)=> (/*html*/`
+  <li class="event__offer">
+    <span class="event__offer-title">${o.title}</span>
+    &plus;&euro;&nbsp;
+    <span class="event__offer-price">${o.price}</span>
+  </li>
+`));
+
+  return offerTemplates.join('');
+}
+
+function createTemplate({dateFrom, dateTo, type, basePrice, isFavorite}, destination, offers) {
   const eventStartDate = shortDate(dateFrom);
   const eventStartTime = timeOfDay(dateFrom);
   const eventStartLongDate = longDate(dateFrom);
@@ -16,7 +28,7 @@ function createTemplate({dateFrom, dateTo, type, basePrice, isFavorite}) {
     <div class="event__type">
       <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
     </div>
-    <h3 class="event__title">${type} Amsterdam</h3>
+    <h3 class="event__title">${type} ${destination.name}</h3>
     <div class="event__schedule">
       <p class="event__time">
         <time class="event__start-time" datetime="${dateTime(dateFrom)}">${eventStartTime}</time>
@@ -30,11 +42,7 @@ function createTemplate({dateFrom, dateTo, type, basePrice, isFavorite}) {
     </p>
     <h4 class="visually-hidden">Offers:</h4>
     <ul class="event__selected-offers">
-      <li class="event__offer">
-        <span class="event__offer-title">Order Uber</span>
-        &plus;&euro;&nbsp;
-        <span class="event__offer-price">20</span>
-      </li>
+      ${createOffersTemplate(offers)}
     </ul>
     <button class="event__favorite-btn ${favoriteClass}" type="button">
       <span class="visually-hidden">Add to favorite</span>
@@ -51,12 +59,14 @@ function createTemplate({dateFrom, dateTo, type, basePrice, isFavorite}) {
 }
 
 export default class EventItem extends Component {
-  constructor({ event }) {
+  constructor({ event, destination, offers }) {
     super();
     this.event = event;
+    this.destination = destination;
+    this.offers = offers;
   }
 
   getTemplate() {
-    return createTemplate(this.event);
+    return createTemplate(this.event, this.destination, this.offers);
   }
 }
