@@ -35,6 +35,10 @@ function getRandomInteger(a, b) {
   return Math.floor(result);
 }
 
+function getRandomBoolean() {
+  return Boolean(getRandomInteger(0, 1));
+}
+
 function shortDate(date) {
   return date ? dayjs(date).format(DateFormat.SHORT_DATE) : '';
 }
@@ -72,6 +76,7 @@ export {
   getRandomArrayElement,
   createIdGenerator,
   getRandomInteger,
+  getRandomBoolean,
   shortDate,
   longDate,
   timeOfDay,
