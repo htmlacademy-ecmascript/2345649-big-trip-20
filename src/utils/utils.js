@@ -7,6 +7,7 @@ const DateFormat = {
   LONG_DATE: 'YYYY-MM-DD',
   TIME: 'hh:mm',
   DATETIME: 'YYYY-MM-DDThh:mm',
+  SHORT_DATETIME: 'DD/MM/YY hh:mm',
   DHM_DURATION: 'DD[D] HH[H] mm[M]',
   HM_DURATION: 'HH[H] mm[M]',
   M_DURATION: 'mm[M]',
@@ -39,6 +40,10 @@ function getRandomBoolean() {
   return Boolean(getRandomInteger(0, 1));
 }
 
+function format(date, type){
+  return date ? dayjs(date).format(type) : '';
+}
+
 function shortDate(date) {
   return date ? dayjs(date).format(DateFormat.SHORT_DATE) : '';
 }
@@ -53,6 +58,9 @@ function timeOfDay(date) {
 
 function dateTime(date) {
   return date ? dayjs(date).format(DateFormat.DATETIME) : '';
+}
+function shortDatetime(date) {
+  return date ? dayjs(date).format(DateFormat.SHORT_DATETIME) : '';
 }
 
 function duration(start, end) {
@@ -73,13 +81,16 @@ function duration(start, end) {
 }
 
 export {
+  DateFormat,
   getRandomArrayElement,
   createIdGenerator,
   getRandomInteger,
   getRandomBoolean,
   shortDate,
+  shortDatetime,
   longDate,
   timeOfDay,
   dateTime,
   duration,
+  format
 };

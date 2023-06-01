@@ -26,7 +26,14 @@ export default class EventsPresenter {
 
     const eventsListElement = this.eventsList.getElement();
 
-    render(new EditEventForm({ event: this.events[0] }), eventsListElement);
+    render(
+      new EditEventForm({
+        event: this.events[0],
+        destination: this.destinationsModel.getById(this.events[0].destination),
+        offers: this.offersModel.getByType(this.events[0].type),
+      }),
+      eventsListElement
+    );
     for (let i = 1; i < this.events.length; i++) {
       render(
         new EventItem({
@@ -34,7 +41,7 @@ export default class EventsPresenter {
           destination: this.destinationsModel.getById(
             this.events[i].destination
           ),
-          offers: this.offersModel.getByType(this.events[i].type)
+          offers: this.offersModel.getByType(this.events[i].type),
         }),
         eventsListElement
       );
