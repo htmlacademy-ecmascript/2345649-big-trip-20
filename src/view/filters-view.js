@@ -1,4 +1,4 @@
-import Component from './component.js';
+import AbstractView from '../framework/view/abstract-view';
 
 function createTemplate() {
   return `
@@ -27,8 +27,8 @@ function createTemplate() {
 </form>`;
 }
 
-export default class FiltersView extends Component {
-  getTemplate() {
+export default class FiltersView extends AbstractView {
+  get template() {
     return createTemplate();
   }
 }

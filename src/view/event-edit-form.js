@@ -1,4 +1,5 @@
-import Component from './component.js';
+import AbstractView from '../framework/view/abstract-view';
+
 import {format, DateFormat} from '../utils/date.js';
 
 function renderPictures(destination) {
@@ -143,15 +144,19 @@ function createTemplate(event, destination, offers) {
   `;
 }
 
-export default class EditEventForm extends Component {
+export default class EditEventForm extends AbstractView {
+  #event;
+  #destination;
+  #offers;
+
   constructor({ event, destination, offers }) {
     super();
-    this.event = event;
-    this.destination = destination;
-    this.offers = offers;
+    this.#event = event;
+    this.#destination = destination;
+    this.#offers = offers;
   }
 
-  getTemplate() {
-    return createTemplate(this.event, this.destination, this.offers);
+  get template() {
+    return createTemplate(this.#event, this.#destination, this.#offers);
   }
 }

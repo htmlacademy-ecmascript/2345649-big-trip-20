@@ -1,4 +1,4 @@
-import Component from './component.js';
+import AbstractView from '../framework/view/abstract-view';
 
 function createTemplate() {
   return `
@@ -167,8 +167,8 @@ function createTemplate() {
 `;
 }
 
-export default class NewEventForm extends Component {
-  getTemplate() {
+export default class NewEventForm extends AbstractView {
+  get template() {
     return createTemplate();
   }
 }

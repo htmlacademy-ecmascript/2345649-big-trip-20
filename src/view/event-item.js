@@ -1,4 +1,4 @@
-import Component from './component.js';
+import AbstractView from '../framework/view/abstract-view';
 import { shortDate, longDate, timeOfDay, duration, dateTime } from '../utils/date.js';
 
 function createOffersTemplate(offers) {
@@ -58,15 +58,19 @@ function createTemplate({dateFrom, dateTo, type, basePrice, isFavorite}, destina
 `;
 }
 
-export default class EventItem extends Component {
+export default class EventItem extends AbstractView {
+  #event;
+  #destination;
+  #offers;
+
   constructor({ event, destination, offers }) {
     super();
-    this.event = event;
-    this.destination = destination;
-    this.offers = offers;
+    this.#event = event;
+    this.#destination = destination;
+    this.#offers = offers;
   }
 
-  getTemplate() {
-    return createTemplate(this.event, this.destination, this.offers);
+  get template() {
+    return createTemplate(this.#event, this.#destination, this.#offers);
   }
 }

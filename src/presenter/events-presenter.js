@@ -1,4 +1,4 @@
-import { render } from '../render.js';
+import { render } from '../framework/render';
 import EventsList from '../view/events-container.js';
 import EventItem from '../view/event-item.js';
 // import NewEventForm from '../view/event-create-form.js';
@@ -24,7 +24,7 @@ export default class EventsPresenter {
 
     render(this.eventsList, this.eventsContainer);
 
-    const eventsListElement = this.eventsList.getElement();
+    const eventsListElement = this.eventsList.element;
 
     render(
       new EditEventForm({
