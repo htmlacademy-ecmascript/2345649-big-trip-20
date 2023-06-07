@@ -1,5 +1,5 @@
 import Component from './component.js';
-import { shortDate, longDate, timeOfDay, duration, dateTime } from '../utils/utils.js';
+import { shortDate, longDate, timeOfDay, duration, dateTime } from '../utils/date.js';
 
 function createOffersTemplate(offers) {
   const offerTemplates = offers.map((o)=> (/*html*/`

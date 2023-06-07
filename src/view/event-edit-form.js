@@ -1,5 +1,5 @@
 import Component from './component.js';
-import {format, DateFormat} from '../utils/utils.js';
+import {format, DateFormat} from '../utils/date.js';
 
 function renderPictures(destination) {
   return destination.pictures.map((p)=>(`<img class="event__photo" src="${p.src}" alt="${p.description}">`)).join('');
