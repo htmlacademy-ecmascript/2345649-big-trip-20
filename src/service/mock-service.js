@@ -10,35 +10,35 @@ import { generateOffer } from '../mock/offer';
 import { getRandomArrayElement, getRandomBoolean, getRandomInteger } from '../utils/utils';
 
 export default class MockService {
-  destinations = [];
-  offers = [];
-  events = [];
+  #destinations = [];
+  #offers = [];
+  #events = [];
 
   constructor() {
-    this.destinations = this.generateDestinations();
-    this.offers = this.generateOffers();
-    this.events = this.generateEvents();
+    this.#destinations = this.#generateDestinations();
+    this.#offers = this.#generateOffers();
+    this.#events = this.#generateEvents();
   }
 
   getDestinations() {
-    return this.destinations;
+    return this.#destinations;
   }
 
   getOffers() {
-    return this.offers;
+    return this.#offers;
   }
 
   getEvents() {
-    return this.events;
+    return this.#events;
   }
 
-  generateDestinations() {
+  #generateDestinations() {
     return Array.from({ length: DESTINATION_COUNT }, () =>
       generateDestination()
     );
   }
 
-  generateOffers() {
+  #generateOffers() {
     return POINT_TYPES.map((type) => ({
       type,
       offers: Array.from({ length: getRandomInteger(0, OFFER_COUNT) }, () =>
@@ -47,15 +47,15 @@ export default class MockService {
     }));
   }
 
-  generateEvents() {
+  #generateEvents() {
     return Array.from({ length: EVENT_COUNT }, () => {
       const type = getRandomArrayElement(POINT_TYPES);
-      const destination = getRandomArrayElement(this.destinations);
+      const destination = getRandomArrayElement(this.#destinations);
 
       const hasOffers = getRandomBoolean();
 
       const offerIds = (hasOffers)
-        ? this.offers.find((offer) => offer.type === type)
+        ? this.#offers.find((offer) => offer.type === type)
         : [];
 
       return generateEvent(type, destination.id, offerIds);
