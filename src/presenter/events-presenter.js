@@ -31,15 +31,15 @@ export default class EventsPresenter {
 
     const eventsListElement = this.#eventsList.element;
 
-    render(
-      new EditEventForm({
-        event: this.#events[0],
-        destination: this.#destinationsModel.getById(this.#events[0].destination),
-        offers: this.#offersModel.getByType(this.#events[0].type),
-      }),
-      eventsListElement
-    );
-    for (let i = 1; i < this.#events.length; i++) {
+    // render(
+    //   new EditEventForm({
+    //     event: this.#events[0],
+    //     destination: this.#destinationsModel.getById(this.#events[0].destination),
+    //     offers: this.#offersModel.getByType(this.#events[0].type),
+    //   }),
+    //   eventsListElement
+    // );
+    for (let i = 0; i < this.#events.length; i++) {
       render(
         new EventItem({
           event: this.#events[i],
