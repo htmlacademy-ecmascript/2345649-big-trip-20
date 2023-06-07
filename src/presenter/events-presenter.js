@@ -29,7 +29,7 @@ export default class EventsPresenter {
 
     render(this.#eventsList, this.#eventsContainer);
 
-    const eventsListElement = this.#eventsList.element;
+
 
     // render(
     //   new EditEventForm({
@@ -40,16 +40,17 @@ export default class EventsPresenter {
     //   eventsListElement
     // );
     for (let i = 0; i < this.#events.length; i++) {
-      render(
-        new EventItem({
-          event: this.#events[i],
-          destination: this.#destinationsModel.getById(
-            this.#events[i].destination
-          ),
-          offers: this.#offersModel.getByType(this.#events[i].type),
-        }),
-        eventsListElement
-      );
+      this.#renderEvent(this.#events[i]);
     }
+  }
+
+  #renderEvent(event) {
+    const eventItem = new EventItem({
+      event,
+      destination: this.#destinationsModel.getById(event.destination),
+      offers: this.#offersModel.getByType(event.type),
+    });
+
+    render(eventItem, this.#eventsList.element);
   }
 }
