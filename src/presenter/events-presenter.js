@@ -5,7 +5,12 @@ import EventItem from '../view/event-item.js';
 import EditEventForm from '../view/event-edit-form.js';
 
 export default class EventsPresenter {
-  eventsList = new EventsList();
+  #eventsList = new EventsList();
+  #events;
+  #eventsContainer;
+  #eventsModel;
+  #destinationsModel;
+  #offersModel;
 
   constructor({
     eventsContainer,
@@ -13,35 +18,35 @@ export default class EventsPresenter {
     destinationsModel,
     offersModel,
   }) {
-    this.eventsContainer = eventsContainer;
-    this.eventsModel = eventsModel;
-    this.destinationsModel = destinationsModel;
-    this.offersModel = offersModel;
+    this.#eventsContainer = eventsContainer;
+    this.#eventsModel = eventsModel;
+    this.#destinationsModel = destinationsModel;
+    this.#offersModel = offersModel;
   }
 
   init() {
-    this.events = [...this.eventsModel.get()];
+    this.#events = [...this.#eventsModel.get()];
 
-    render(this.eventsList, this.eventsContainer);
+    render(this.#eventsList, this.#eventsContainer);
 
-    const eventsListElement = this.eventsList.element;
+    const eventsListElement = this.#eventsList.element;
 
     render(
       new EditEventForm({
-        event: this.events[0],
-        destination: this.destinationsModel.getById(this.events[0].destination),
-        offers: this.offersModel.getByType(this.events[0].type),
+        event: this.#events[0],
+        destination: this.#destinationsModel.getById(this.#events[0].destination),
+        offers: this.#offersModel.getByType(this.#events[0].type),
       }),
       eventsListElement
     );
-    for (let i = 1; i < this.events.length; i++) {
+    for (let i = 1; i < this.#events.length; i++) {
       render(
         new EventItem({
-          event: this.events[i],
-          destination: this.destinationsModel.getById(
-            this.events[i].destination
+          event: this.#events[i],
+          destination: this.#destinationsModel.getById(
+            this.#events[i].destination
           ),
-          offers: this.offersModel.getByType(this.events[i].type),
+          offers: this.#offersModel.getByType(this.#events[i].type),
         }),
         eventsListElement
       );
