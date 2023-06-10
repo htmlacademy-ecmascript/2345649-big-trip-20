@@ -1,9 +1,10 @@
-import { render, replace } from '../framework/render';
+import { RenderPosition, render, replace } from '../framework/render';
 import EventsList from '../view/events-container.js';
 import EventItem from '../view/event-item.js';
-// import NewEventForm from '../view/event-create-form.js';
 import EditEventForm from '../view/event-edit-form.js';
-
+import FilterView from '../view/filters-view.js';
+import SortView from '../view/sort-view.js';
+import TripInfo from '../view/trip-info.js';
 export default class EventsPresenter {
   #eventsList = new EventsList();
   #events;
@@ -27,16 +28,22 @@ export default class EventsPresenter {
   init() {
     this.#events = [...this.#eventsModel.get()];
 
+    const tripElement = document.querySelector('.trip-main');
+    const filtersElement = tripElement.querySelector('.trip-controls__filters');
+
+    this.#renderBoard(tripElement, filtersElement);
+  }
+
+  #renderBoard(tripElement, filtersElement) {
+    render(new TripInfo(), tripElement, RenderPosition.AFTERBEGIN);
+    render(new FilterView(), filtersElement);
+    render(new SortView(), this.#eventsContainer);
     render(this.#eventsList, this.#eventsContainer);
 
-    // render(
-    //   new EditEventForm({
-    //     event: this.#events[0],
-    //     destination: this.#destinationsModel.getById(this.#events[0].destination),
-    //     offers: this.#offersModel.getByType(this.#events[0].type),
-    //   }),
-    //   eventsListElement
-    // );
+    this.#renderEvents();
+  }
+
+  #renderEvents() {
     for (let i = 0; i < this.#events.length; i++) {
       this.#renderEvent(this.#events[i]);
     }
