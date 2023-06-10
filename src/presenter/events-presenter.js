@@ -45,26 +45,44 @@ export default class EventsPresenter {
   #renderEvent(event) {
     const destination = this.#destinationsModel.getById(event.destination);
     const offers = this.#offersModel.getByType(event.type);
-
+    const escKeyDownHandler = (evt) => {
+      if (evt.key === 'Escape') {
+        evt.preventDefault();
+        toggleToEventView();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
+    };
     const eventItem = new EventItem({
       event,
       destination,
       offers,
-      onEditClick: editEvent,
+      onEditClick: () => {
+        editEvent();
+        document.addEventListener('keydown', escKeyDownHandler);
+      },
     });
 
     const editEventForm = new EditEventForm({
       event,
       destination,
       offers,
-      onFormSubmit: submitEvent,
-      onRollupClick: submitEvent
+      onFormSubmit: () => {
+        submitEvent();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      },
+      onRollupClick: () => {
+        toggleToEventView();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      },
     });
 
     function editEvent() {
       replace(editEventForm, eventItem);
     }
     function submitEvent() {
+      replace(eventItem, editEventForm);
+    }
+    function toggleToEventView() {
       replace(eventItem, editEventForm);
     }
 
