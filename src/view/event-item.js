@@ -43,13 +43,9 @@ function createTemplate(
     <h3 class="event__title">${type} ${destination.name}</h3>
     <div class="event__schedule">
       <p class="event__time">
-        <time class="event__start-time" datetime="${dateTime(
-          dateFrom
-        )}">${eventStartTime}</time>
+        <time class="event__start-time" datetime="${dateTime(dateFrom)}">${eventStartTime}</time>
         &mdash;
-        <time class="event__end-time" datetime="${dateTime(
-          dateTo
-        )}">${eventEndTime}</time>
+        <time class="event__end-time" datetime="${dateTime(dateTo)}">${eventEndTime}</time>
       </p>
       <p class="event__duration">${dur}</p>
     </div>
