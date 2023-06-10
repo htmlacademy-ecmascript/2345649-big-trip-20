@@ -1,4 +1,4 @@
-import { render } from '../framework/render';
+import { render, replace } from '../framework/render';
 import EventsList from '../view/events-container.js';
 import EventItem from '../view/event-item.js';
 // import NewEventForm from '../view/event-create-form.js';
@@ -29,8 +29,6 @@ export default class EventsPresenter {
 
     render(this.#eventsList, this.#eventsContainer);
 
-
-
     // render(
     //   new EditEventForm({
     //     event: this.#events[0],
@@ -45,11 +43,30 @@ export default class EventsPresenter {
   }
 
   #renderEvent(event) {
+    const destination = this.#destinationsModel.getById(event.destination);
+    const offers = this.#offersModel.getByType(event.type);
+
     const eventItem = new EventItem({
       event,
-      destination: this.#destinationsModel.getById(event.destination),
-      offers: this.#offersModel.getByType(event.type),
+      destination,
+      offers,
+      onEditClick: editEvent,
     });
+
+    const editEventForm = new EditEventForm({
+      event,
+      destination,
+      offers,
+      onFormSubmit: submitEvent,
+      onRollupClick: submitEvent
+    });
+
+    function editEvent() {
+      replace(editEventForm, eventItem);
+    }
+    function submitEvent() {
+      replace(eventItem, editEventForm);
+    }
 
     render(eventItem, this.#eventsList.element);
   }
