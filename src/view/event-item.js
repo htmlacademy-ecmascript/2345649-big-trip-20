@@ -1,19 +1,31 @@
-import Component from './component.js';
-import { shortDate, longDate, timeOfDay, duration, dateTime } from '../utils/date.js';
+import AbstractView from '../framework/view/abstract-view';
+import {
+  shortDate,
+  longDate,
+  timeOfDay,
+  duration,
+  dateTime,
+} from '../utils/date.js';
 
 function createOffersTemplate(offers) {
-  const offerTemplates = offers.map((o)=> (/*html*/`
+  const offerTemplates = offers.map(
+    (o) => /*html*/ `
   <li class="event__offer">
     <span class="event__offer-title">${o.title}</span>
     &plus;&euro;&nbsp;
     <span class="event__offer-price">${o.price}</span>
   </li>
-`));
+`
+  );
 
   return offerTemplates.join('');
 }
 
-function createTemplate({dateFrom, dateTo, type, basePrice, isFavorite}, destination, offers) {
+function createTemplate(
+  { dateFrom, dateTo, type, basePrice, isFavorite },
+  destination,
+  offers
+) {
   const eventStartDate = shortDate(dateFrom);
   const eventStartTime = timeOfDay(dateFrom);
   const eventStartLongDate = longDate(dateFrom);
@@ -21,7 +33,7 @@ function createTemplate({dateFrom, dateTo, type, basePrice, isFavorite}, destina
   const dur = duration(dateFrom, dateTo);
   const favoriteClass = isFavorite ? 'event__favorite-btn--active' : '';
 
-  return /*html*/`
+  return /*html*/ `
   <li class="trip-events__item">
     <div class="event">
     <time class="event__date" datetime="${eventStartLongDate}">${eventStartDate}</time>
@@ -58,15 +70,29 @@ function createTemplate({dateFrom, dateTo, type, basePrice, isFavorite}, destina
 `;
 }
 
-export default class EventItem extends Component {
-  constructor({ event, destination, offers }) {
+export default class EventItem extends AbstractView {
+  #event;
+  #destination;
+  #offers;
+  #handleEditClick;
+
+  constructor({ event, destination, offers, onEditClick }) {
     super();
-    this.event = event;
-    this.destination = destination;
-    this.offers = offers;
+    this.#event = event;
+    this.#destination = destination;
+    this.#offers = offers;
+    this.#handleEditClick = onEditClick;
+    this.element
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#clickHandler);
   }
 
-  getTemplate() {
-    return createTemplate(this.event, this.destination, this.offers);
+  get template() {
+    return createTemplate(this.#event, this.#destination, this.#offers);
   }
+
+  #clickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleEditClick();
+  };
 }

@@ -1,4 +1,4 @@
-import Component from './component.js';
+import AbstractView from '../framework/view/abstract-view';
 
 function createTemplate() {
   return `
@@ -7,8 +7,8 @@ function createTemplate() {
 `;
 }
 
-export default class EventsContainer extends Component {
-  getTemplate() {
+export default class EventsContainer extends AbstractView {
+  get template() {
     return createTemplate();
   }
 }

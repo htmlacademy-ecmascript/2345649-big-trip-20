@@ -1,4 +1,4 @@
-import Component from './component.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 function createTemplate() {
   return `
@@ -15,8 +15,8 @@ function createTemplate() {
 </section>`;
 }
 
-export default class TripInfo extends Component {
-  getTemplate() {
+export default class TripInfo extends AbstractView {
+  get template() {
     return createTemplate();
   }
 }
