@@ -56,7 +56,8 @@ export default class EventsPresenter {
     const offers = this.#offersModel.getByType(event.type);
     const eventPresenter = new EventPresenter({
       eventsListContainer: this.#eventsList.element,
-      onDataChange: this.#handleEventChange
+      onDataChange: this.#handleEventChange,
+      onModeChange: this.#handleModeChange,
     });
 
     this.#eventPresenters.set(event.id, eventPresenter);
@@ -64,10 +65,18 @@ export default class EventsPresenter {
     eventPresenter.render(event, destination, offers);
   }
 
+  #handleModeChange = () => {
+    this.#eventPresenters.forEach((presenter) => presenter.setViewMode());
+  };
+
   #handleEventChange = (updatedEvent) => {
-    const destination = this.#destinationsModel.getById(updatedEvent.destination);
+    const destination = this.#destinationsModel.getById(
+      updatedEvent.destination
+    );
     const offers = this.#offersModel.getByType(updatedEvent.type);
     this.#events = updateItem(this.#events, updatedEvent);
-    this.#eventPresenters.get(updatedEvent.id).render(updatedEvent, destination, offers);
+    this.#eventPresenters
+      .get(updatedEvent.id)
+      .render(updatedEvent, destination, offers);
   };
 }

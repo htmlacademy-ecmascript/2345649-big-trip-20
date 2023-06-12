@@ -2,6 +2,11 @@ import { remove, render, replace } from '../framework/render';
 import EditEventForm from '../view/event-edit-form';
 import EventItem from '../view/event-item';
 
+const Mode = {
+  VIEW: 'VIEW',
+  EDIT: 'EDIT',
+};
+
 export default class EventPresenter {
   #eventsListContainer;
   #eventComponent;
@@ -10,10 +15,13 @@ export default class EventPresenter {
   #destination;
   #offers;
   #handleDataChange;
+  #handleModeChange;
+  #mode = Mode.VIEW;
 
-  constructor({ eventsListContainer, onDataChange }) {
+  constructor({ eventsListContainer, onDataChange, onModeChange }) {
     this.#eventsListContainer = eventsListContainer;
     this.#handleDataChange = onDataChange;
+    this.#handleModeChange = onModeChange;
   }
 
   render(event, destination, offers) {
@@ -45,11 +53,9 @@ export default class EventPresenter {
       return;
     }
 
-    if (this.#eventsListContainer.contains(prevEventComponent.element)) {
+    if (this.#mode === Mode.VIEW) {
       replace(this.#eventComponent, prevEventComponent);
-    }
-
-    if (this.#eventsListContainer.contains(prevEventEditComponent.element)) {
+    } else {
       replace(this.#eventEditComponent, prevEventEditComponent);
     }
 
@@ -57,9 +63,15 @@ export default class EventPresenter {
     remove(prevEventEditComponent);
   }
 
+  setViewMode() {
+    if (this.#mode !== Mode.VIEW) {
+      this.#mode = Mode.VIEW;
+      replace(this.#eventComponent, this.#eventEditComponent);
+    }
+  }
+
   #handleEditClick = () => {
-    this.#editEvent();
-    document.addEventListener('keydown', this.#escKeyDownHandler);
+    this.#setEditMode();
   };
 
   #handleFavoriteClick = () => {
@@ -68,32 +80,29 @@ export default class EventPresenter {
   };
 
   #handleFormSubmit = () => {
-    this.#submitEvent();
+    this.setViewMode();
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
   #handleRollupClick = () => {
-    this.#toggleToEventView();
+    this.setViewMode();
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
-      this.#toggleToEventView();
+      this.setViewMode();
       document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
   };
 
-  #editEvent() {
-    replace(this.#eventEditComponent, this.#eventComponent);
-  }
-
-  #submitEvent() {
-    replace(this.#eventComponent, this.#eventEditComponent);
-  }
-
-  #toggleToEventView() {
-    replace(this.#eventComponent, this.#eventEditComponent);
+  #setEditMode() {
+    if (this.#mode !== Mode.EDIT) {
+      this.#handleModeChange();
+      replace(this.#eventEditComponent, this.#eventComponent);
+      document.addEventListener('keydown', this.#escKeyDownHandler);
+      this.#mode = Mode.EDIT;
+    }
   }
 }
