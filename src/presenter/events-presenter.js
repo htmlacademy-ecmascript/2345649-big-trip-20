@@ -1,4 +1,5 @@
 import { RenderPosition, render } from '../framework/render';
+import { updateItem } from '../utils/utils';
 import EventsList from '../view/events-container.js';
 import FilterView from '../view/filters-view.js';
 import SortView from '../view/sort-view.js';
@@ -12,6 +13,7 @@ export default class EventsPresenter {
   #eventsModel;
   #destinationsModel;
   #offersModel;
+  #eventPresenters = new Map();
 
   constructor({
     eventsContainer,
@@ -54,8 +56,18 @@ export default class EventsPresenter {
     const offers = this.#offersModel.getByType(event.type);
     const eventPresenter = new EventPresenter({
       eventsListContainer: this.#eventsList.element,
+      onDataChange: this.#handleEventChange
     });
 
-    eventPresenter.init(event, destination, offers);
+    this.#eventPresenters.set(event.id, eventPresenter);
+
+    eventPresenter.render(event, destination, offers);
   }
+
+  #handleEventChange = (updatedEvent) => {
+    const destination = this.#destinationsModel.getById(updatedEvent.destination);
+    const offers = this.#offersModel.getByType(updatedEvent.type);
+    this.#events = updateItem(this.#events, updatedEvent);
+    this.#eventPresenters.get(updatedEvent.id).render(updatedEvent, destination, offers);
+  };
 }
