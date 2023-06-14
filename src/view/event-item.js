@@ -43,9 +43,13 @@ function createTemplate(
     <h3 class="event__title">${type} ${destination.name}</h3>
     <div class="event__schedule">
       <p class="event__time">
-        <time class="event__start-time" datetime="${dateTime(dateFrom)}">${eventStartTime}</time>
+        <time class="event__start-time" datetime="${dateTime(
+    dateFrom
+  )}">${eventStartTime}</time>
         &mdash;
-        <time class="event__end-time" datetime="${dateTime(dateTo)}">${eventEndTime}</time>
+        <time class="event__end-time" datetime="${dateTime(
+    dateTo
+  )}">${eventEndTime}</time>
       </p>
       <p class="event__duration">${dur}</p>
     </div>
@@ -75,23 +79,34 @@ export default class EventItem extends AbstractView {
   #destination;
   #offers;
   #handleEditClick;
+  #handleFavoriteClick;
 
-  constructor({ event, destination, offers, onEditClick }) {
+  constructor({ event, destination, offers, onEditClick, onFavoriteClick }) {
     super();
     this.#event = event;
     this.#destination = destination;
     this.#offers = offers;
     this.#handleEditClick = onEditClick;
+    this.#handleFavoriteClick = onFavoriteClick;
+
     this.element
       .querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#clickHandler);
+      .addEventListener('click', this.#editClickHandler);
+    this.element
+      .querySelector('.event__favorite-btn')
+      .addEventListener('click', this.#favoriteClickHandler);
   }
 
   get template() {
     return createTemplate(this.#event, this.#destination, this.#offers);
   }
 
-  #clickHandler = (evt) => {
+  #favoriteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFavoriteClick();
+  };
+
+  #editClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleEditClick();
   };
